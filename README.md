@@ -10,10 +10,11 @@ Add this marketplace to Claude Code:
 /plugin marketplace add bengio777/bengio-marketplace
 ```
 
-Then install any plugin:
+Then install plugins:
 
 ```
 /plugin install prd-builder@bengio-marketplace
+/plugin install build-journal@bengio-marketplace
 ```
 
 ## Available Plugins
@@ -39,6 +40,24 @@ Generate production-ready Product Requirements Documents through structured disc
 4. Quality review and scoring
 5. Optional deep-dive modules (competitive analysis, revenue architecture, platform integration)
 6. Implementation handoff
+
+### Build Journal
+
+Auto-captures build metadata during coding sessions and generates tiered retrospective documents.
+
+**What it does:** Tracks what you built, how you built it, and what you learned. Includes a session-start hook that asks whether to enable tracking, and interview templates for end-of-session retrospectives.
+
+**Trigger phrases:**
+- "Build journal"
+- "Generate retrospective"
+- "Log this build"
+- "Wrapping up the build"
+- "Done for the day"
+- "Closing out this session"
+
+**Modes:**
+- Full Retrospective -- when a build is complete
+- Daily Recap -- end-of-day session summary
 
 ## Distribution
 

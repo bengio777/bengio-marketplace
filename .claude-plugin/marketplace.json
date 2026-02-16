@@ -13,6 +13,12 @@
       "source": "./plugins/prd-builder",
       "description": "Generate production-ready Product Requirements Documents through structured discovery, version coaching, and iterative refinement. 6-phase workflow with 10 reference files.",
       "version": "1.0.0"
+    },
+    {
+      "name": "build-journal",
+      "source": "./plugins/build-journal",
+      "description": "Auto-captures build metadata during coding sessions and generates tiered retrospective documents with session-start hooks and interview templates.",
+      "version": "1.0.0"
     }
   ]
 }
