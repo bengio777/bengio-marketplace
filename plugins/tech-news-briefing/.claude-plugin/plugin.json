@@ -9,6 +9,7 @@
   "repository": "https://github.com/bengio777/bengio-marketplace",
   "license": "MIT",
   "keywords": ["news", "briefing", "tech", "AI", "automation", "daily"],
+  "commands": "./commands/",
   "skills": "./skills/",
-  "hooks": "./hooks/"
+  "agents": "./agents/"
 }
