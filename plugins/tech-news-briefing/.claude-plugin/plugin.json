@@ -10,6 +10,5 @@
   "license": "MIT",
   "keywords": ["news", "briefing", "tech", "AI", "automation", "daily"],
   "commands": "./commands/",
-  "skills": "./skills/",
-  "agents": "./agents/"
+  "skills": "./skills/"
 }
