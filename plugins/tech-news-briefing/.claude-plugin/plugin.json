@@ -1,6 +1,6 @@
 {
   "name": "tech-news-briefing",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Autonomous daily tech news briefing agent. Researches 12 sources, curates stories into tiered markdown, pushes to GitHub, and emails the briefing.",
   "author": {
     "name": "Ben Giordano",

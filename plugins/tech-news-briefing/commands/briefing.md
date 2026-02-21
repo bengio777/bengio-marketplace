@@ -18,4 +18,18 @@ Execute the full news briefing pipeline:
 
 5. **Save** — Write the briefing to the output path. Confirm it was saved.
 
-6. **Report** — Summarize: stories scanned vs. included, breakdown by tier, any unreachable sources, file path.
+6. **Publish to GitHub** — Commit and push the briefing to the remote repository. Run these commands in sequence using Bash:
+   ```
+   git -C /Users/benjamingiordano/BPG_Tech-News add YYYY/week-WW/YYYY-MM-DD.md
+   git -C /Users/benjamingiordano/BPG_Tech-News commit -m "briefing: YYYY-MM-DD"
+   git -C /Users/benjamingiordano/BPG_Tech-News push origin main
+   ```
+   Replace YYYY, WW, MM, DD with the actual date values from Step 1. If the push fails, log the error but continue to the next step.
+
+7. **Email delivery** — Send the briefing via email using the Python script:
+   ```
+   python3 ${CLAUDE_PLUGIN_ROOT}/scripts/send-email.py /Users/benjamingiordano/BPG_Tech-News/YYYY/week-WW/YYYY-MM-DD.md
+   ```
+   If the script fails (non-zero exit), log the error but do not treat it as a pipeline failure. The briefing is already saved and pushed.
+
+8. **Report** — Summarize: stories scanned vs. included, breakdown by tier, any unreachable sources, file path, git push status (success/failure), email delivery status (success/failure).
