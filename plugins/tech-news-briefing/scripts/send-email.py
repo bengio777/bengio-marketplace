@@ -5,7 +5,7 @@ Usage: python3 send-email.py /path/to/YYYY-MM-DD.md
 
 Credentials are read from macOS Keychain:
   - Service "tech-news-briefing-smtp": account = FROM email, password = app password
-  - Service "tech-news-briefing-to": account = "tech-news-briefing", password = TO email
+  - Service "tech-news-briefing-to": account = "tech-news-briefing", password = comma-separated TO emails
 """
 
 import sys
@@ -52,9 +52,10 @@ def get_smtp_credentials():
     return from_email, password
 
 
-def get_to_email():
-    """Get TO email address from Keychain."""
-    return get_keychain_password("tech-news-briefing-to", "tech-news-briefing")
+def get_to_emails():
+    """Get TO email addresses from Keychain (comma-separated)."""
+    raw = get_keychain_password("tech-news-briefing-to", "tech-news-briefing")
+    return [addr.strip() for addr in raw.split(",") if addr.strip()]
 
 
 def send_briefing(briefing_path):
@@ -68,12 +69,12 @@ def send_briefing(briefing_path):
     subject = f"Tech News Briefing -- {date_str}"
 
     from_email, password = get_smtp_credentials()
-    to_email = get_to_email()
+    to_emails = get_to_emails()
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = f"BPG Tech News <{from_email}>"
-    msg["To"] = to_email
+    msg["To"] = ", ".join(to_emails)
 
     text_part = MIMEText(content, "plain", "utf-8")
     msg.attach(text_part)
@@ -85,7 +86,7 @@ def send_briefing(briefing_path):
         server.login(from_email, password)
         server.send_message(msg)
 
-    print(f"Briefing emailed to {to_email}", file=sys.stderr)
+    print(f"Briefing emailed to {', '.join(to_emails)}", file=sys.stderr)
 
 
 if __name__ == "__main__":
