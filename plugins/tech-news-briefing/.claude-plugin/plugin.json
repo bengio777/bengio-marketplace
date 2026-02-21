@@ -1,0 +1,14 @@
+{
+  "name": "tech-news-briefing",
+  "version": "1.0.0",
+  "description": "Autonomous daily tech news briefing agent. Researches 12 sources, curates stories into tiered markdown, pushes to GitHub, and emails the briefing.",
+  "author": {
+    "name": "Ben Giordano",
+    "email": "bengio777@gmail.com"
+  },
+  "repository": "https://github.com/bengio777/bengio-marketplace",
+  "license": "MIT",
+  "keywords": ["news", "briefing", "tech", "AI", "automation", "daily"],
+  "skills": "./skills/",
+  "hooks": "./hooks/"
+}

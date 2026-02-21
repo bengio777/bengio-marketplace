@@ -19,6 +19,12 @@
       "source": "./plugins/build-journal",
       "description": "Auto-captures build metadata during coding sessions and generates tiered retrospective documents with session-start hooks and interview templates.",
       "version": "1.0.0"
+    },
+    {
+      "name": "tech-news-briefing",
+      "source": "./plugins/tech-news-briefing",
+      "description": "Autonomous daily tech news briefing agent. Researches 12 sources, curates stories into tiered markdown, pushes to GitHub, and emails the briefing.",
+      "version": "1.0.0"
     }
   ]
 }
