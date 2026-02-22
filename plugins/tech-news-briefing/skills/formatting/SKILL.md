@@ -5,22 +5,35 @@ description: >
   the agent or user needs to "format the briefing", "create the markdown output",
   "structure the news report", "generate the briefing document", or "write the
   final briefing".
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Tech News Briefing Formatting
 
-Transform curated, tiered stories into a clean markdown briefing document.
+Transform curated, routed stories into a tabbed markdown briefing document.
 
 ## Output Structure
 
-Use the template at `${CLAUDE_PLUGIN_ROOT}/templates/briefing.md` as the structural guide. The final document has these sections in order:
+Use the template at `${CLAUDE_PLUGIN_ROOT}/templates/daily.md` as the structural guide. The final document has these parts:
 
-1. **Header** — date, day of week, story count, generation timestamp
-2. **Must-Read** — highest-priority stories (may be empty on quiet days)
-3. **Worth Knowing** — important stories worth attention
-4. **On the Radar** — emerging stories to watch
+1. **Header** — date, day of week, cadence badge, story count, generation timestamp
+2. **Tab: AI News** — tiered stories (Must-Read / Worth Knowing / On the Radar)
+3. **Tab: AI Breakthroughs & Viral** — flat list of high-signal stories
+4. **Tab: Cyber Intel** — sectioned security stories
 5. **Footer** — sources checked, generation note
+
+## Tab Markers
+
+Each tab is preceded by an HTML comment marker on its own line. This is how the dashboard parser detects tabs:
+
+```markdown
+<!-- tab: AI News -->
+```
+
+Tab marker names must match exactly:
+- `AI News`
+- `AI Breakthroughs & Viral`
+- `Cyber Intel`
 
 ## Per-Item Format
 
@@ -37,12 +50,12 @@ Rules:
 - No emoji anywhere in the document
 - No numbering — use unordered bullet lists
 
-## Section Headers
+## Tab 1: AI News
 
-Each tier section uses an H2 heading with a horizontal rule separator:
+Uses H2 headings for tiers with horizontal rule separators:
 
 ```markdown
----
+<!-- tab: AI News -->
 
 ## Must-Read
 
@@ -53,32 +66,78 @@ Each tier section uses an H2 heading with a horizontal rule separator:
 ## Worth Knowing
 
 - **[Story Title](url)** — Summary. *Source: SourceName*
+
+---
+
+## On the Radar
+
+- **[Story Title](url)** — Summary. *Source: SourceName*
 ```
 
-## Empty Sections
+If a tier has zero stories, omit that section entirely. Do not include an empty heading.
 
-- If a tier has zero stories, omit that section entirely. Do not include an empty heading.
-- At minimum, the briefing should have at least one section with stories. If curation produced zero stories across all tiers, note: `*No significant tech news stories found for today.*`
+## Tab 2: AI Breakthroughs & Viral
+
+No tier headings — just a flat list under a single H2:
+
+```markdown
+<!-- tab: AI Breakthroughs & Viral -->
+
+## Breakthroughs
+
+- **[Story Title](url)** — Summary. *Source: SourceName*
+```
+
+If zero stories qualify for this tab, omit the entire tab (including the `<!-- tab: -->` marker).
+
+## Tab 3: Cyber Intel
+
+Uses H2 headings for sections:
+
+```markdown
+<!-- tab: Cyber Intel -->
+
+## AI x Cyber
+
+- **[Story Title](url)** — Summary. *Source: SourceName*
+
+## Breaches & Incidents
+
+- **[Story Title](url)** — Summary. *Source: SourceName*
+
+## Active Threats
+
+- **[Story Title](url)** — Summary. *Source: SourceName*
+
+## OSINT Signal
+
+- **[Story Title](url)** — Summary. *Source: SourceName*
+```
+
+Omit any section with zero stories. If the entire Cyber Intel tab has zero stories, omit the tab.
 
 ## Summary Writing Rules
 
 - **Active voice**: "Anthropic launched..." not "A new feature was launched by..."
-- **Specific**: Include concrete details (version numbers, dollar amounts, feature names)
+- **Specific**: Include concrete details (version numbers, dollar amounts, CVE IDs, CVSS scores)
 - **No hedging**: "Anthropic announced X" not "It appears that Anthropic may have announced X"
 - **No opinion**: Report what happened, not what you think about it
-- **Technical audience**: Assume the reader is a tech-literate professional. No need to explain what an LLM is.
+- **Technical audience**: Assume the reader is a tech-literate professional. No need to explain what an LLM or CVE is.
+- **Cyber stories**: Include CVE IDs when available. Mention CVSS score if >= 8.0. Note if CISA KEV listed.
 
 ## Header Format
 
 ```markdown
-# Tech News Briefing — [Full Date]
-**[Day of Week]** | [N] stories | Generated [HH:MM AM/PM MST]
+# BPG Tech News Briefing — [Full Date]
+
+**[Day of Week]** | Daily | [N] stories | Generated [HH:MM AM/PM MST]
 ```
 
 Example:
 ```markdown
-# Tech News Briefing — February 21, 2026
-**Saturday** | 14 stories | Generated 6:00 AM MST
+# BPG Tech News Briefing — February 22, 2026
+
+**Saturday** | Daily | 18 stories | Generated 6:00 AM MST
 ```
 
 ## Footer Format
@@ -86,7 +145,7 @@ Example:
 ```markdown
 ---
 
-*Sources checked: Anthropic Blog, OpenAI Blog, Hacker News, Ars Technica, The Verge, TechCrunch, Ben's Bites, Twitter/X, Microsoft AI, Meta AI, Dev.to, Product Hunt*
+*Sources checked: Anthropic Blog, OpenAI Blog, Hacker News, Ars Technica, The Verge, TechCrunch, Ben's Bites, Twitter/X, Microsoft AI, Meta AI, arXiv, Product Hunt, GitHub Trending, Reddit, Dev.to, BleepingComputer, Dark Reading, SecurityWeek, Krebs on Security, The Record, r/netsec*
 *Generated by BPG Tech News Agent*
 ```
 
@@ -95,12 +154,22 @@ If any sources were unreachable during research, add a note:
 *Note: The following sources were unreachable during this run: [source list]*
 ```
 
+## Empty Briefing
+
+At minimum, the briefing should have at least one tab with stories. If curation produced zero stories across all tabs, output:
+```markdown
+*No significant tech news stories found for today.*
+```
+
 ## Final Check
 
 Before saving, verify:
-- [ ] Every story has a working markdown link
-- [ ] No duplicate stories appear across tiers
+- [ ] Every story links to the **specific article page** — no homepage or section-page URLs (e.g., `https://thehackernews.com/` is a homepage and must never appear as a story link)
+- [ ] No duplicate stories appear across tabs
 - [ ] Summaries are 1-2 sentences (no longer)
 - [ ] No emoji in the document
-- [ ] Sections are ordered: Must-Read, Worth Knowing, On the Radar
-- [ ] Empty tiers are omitted, not shown as empty sections
+- [ ] Tab markers are present and correctly named
+- [ ] Empty tabs/sections are omitted entirely
+- [ ] CVE IDs included in cyber stories where available
+
+If any story still has a homepage URL after formatting, **remove that story** from the briefing.

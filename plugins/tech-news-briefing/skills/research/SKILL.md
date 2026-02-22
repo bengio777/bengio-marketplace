@@ -5,81 +5,131 @@ description: >
   the agent or user needs to "search for news", "research tech stories", "gather
   headlines", "check news sources", "find recent tech announcements", or "scan
   sources for today's news".
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Tech News Research
 
-Research the latest tech news by systematically querying 12 sources. Prioritize freshness and breadth.
+Research the latest tech news by systematically querying sources across three domains: AI, Breakthroughs/Viral, and Cybersecurity. Prioritize freshness and breadth.
+
+## Pre-fetch Data
+
+Before running searches, check for pre-fetched data files:
+
+```
+~/.config/tech-news-briefing/prefetch/osint-YYYY-MM-DD.json
+~/.config/tech-news-briefing/prefetch/podcasts-YYYY-MM-DD.json
+```
+
+If the OSINT file exists, read it and incorporate the data directly into the Cyber Intel tab — these are structured records from CISA KEV and NVD that don't need WebSearch.
 
 ## Source Query Strategy
 
-Execute searches in this order. Use WebSearch for most sources and WebFetch for sources with known direct URLs.
+Execute searches in this order. Use WebSearch for most sources and WebFetch for sources with known direct URLs. Tag each story with a **category** for downstream routing.
 
-### Group 1: Direct-Access Sources (WebFetch)
+### Group 1: AI News Sources
 
-Fetch these pages directly and extract recent posts:
+These feed the **AI News** tab.
 
-1. **Anthropic Blog**
-   - WebFetch `https://www.anthropic.com/news`
-   - Extract: post titles, dates, URLs, and first-paragraph summaries
+1. **Anthropic Blog** — WebFetch `https://www.anthropic.com/news`
+   - Category: `ai-news`
    - Look for: Claude updates, safety research, company announcements
 
-2. **OpenAI Blog**
-   - WebFetch `https://openai.com/news/`
-   - Extract: post titles, dates, URLs, and first-paragraph summaries
+2. **OpenAI Blog** — WebFetch `https://openai.com/news/`
+   - Category: `ai-news`
    - Look for: GPT updates, product launches, research papers
 
-3. **Ben's Bites Newsletter**
-   - WebFetch `https://bensbites.beehiiv.com/`
-   - Extract: latest newsletter items with links
+3. **Ben's Bites Newsletter** — WebFetch `https://bensbites.beehiiv.com/`
+   - Category: `ai-news`
    - Look for: curated AI product launches, funding, tools
 
-### Group 2: Search-Based Sources (WebSearch)
+4. **Hacker News (AI)** — WebSearch `site:news.ycombinator.com AI OR "machine learning" OR "large language model" OR Claude OR OpenAI`
+   - Category: `ai-news`
+   - Look for: trending technical discussions, new tools
 
-For each source, include the current date in queries to get fresh results.
-
-4. **Hacker News**
-   - Query: `site:news.ycombinator.com AI OR "machine learning" OR "large language model" OR Claude OR OpenAI`
-   - Also try: `Hacker News top stories AI today [current date]`
-   - Look for: trending technical discussions, new tools, research
-
-5. **Ars Technica**
-   - Query: `site:arstechnica.com AI OR "artificial intelligence" OR tech [current month year]`
+5. **Ars Technica** — WebSearch `site:arstechnica.com AI OR "artificial intelligence" [current month year]`
+   - Category: `ai-news`
    - Look for: deep technical analysis, policy, research coverage
 
-6. **The Verge**
-   - Query: `site:theverge.com AI OR tech news [current month year]`
-   - Look for: product announcements, industry news, consumer tech
+6. **The Verge** — WebSearch `site:theverge.com AI OR tech news [current month year]`
+   - Category: `ai-news`
+   - Look for: product announcements, industry news
 
-7. **TechCrunch**
-   - Query: `site:techcrunch.com AI OR startup OR funding [current month year]`
+7. **TechCrunch** — WebSearch `site:techcrunch.com AI OR startup OR funding [current month year]`
+   - Category: `ai-news`
    - Look for: funding rounds, product launches, startup coverage
 
-### Group 3: Twitter/X Monitoring (WebSearch)
+8. **Microsoft AI** — WebSearch `site:microsoft.com AI blog OR "Azure AI" OR Copilot [current month year]`
+   - Category: `ai-news`
+   - Look for: Azure AI updates, Copilot features
 
-8. **Key accounts**
-   - Query: `site:x.com (@AnthropicAI OR @alexalbert__ OR @OpenAI OR @GoogleDeepMind) [current month year]`
-   - Also try individual account searches if the combined query returns limited results
-   - Look for: product announcements, release notes, research highlights
+9. **Meta AI** — WebSearch `site:ai.meta.com OR "Meta AI" blog [current month year]`
+   - Category: `ai-news`
+   - Look for: Llama updates, open-source releases
 
-### Group 4: Supplementary Sources (WebSearch)
+10. **Twitter/X (AI)** — WebSearch `site:x.com (@AnthropicAI OR @alexalbert__ OR @OpenAI OR @GoogleDeepMind) [current month year]`
+    - Category: `ai-news`
+    - Look for: product announcements, release notes
 
-9. **Microsoft AI**
-   - Query: `site:microsoft.com AI blog OR "Azure AI" OR Copilot [current month year]`
-   - Look for: Azure AI updates, Copilot features, research
+### Group 2: Breakthrough & Viral Sources
 
-10. **Meta AI**
-    - Query: `site:ai.meta.com OR "Meta AI" blog [current month year]`
-    - Look for: Llama updates, open-source releases, research
+These feed the **AI Breakthroughs & Viral** tab. Focus on stories with high wow-factor from the past 72 hours.
 
-11. **Dev.to**
-    - Query: `site:dev.to AI OR "machine learning" OR "LLM" popular [current month year]`
-    - Look for: developer tutorials, hands-on guides, tool comparisons
+11. **arXiv / Research papers** — WebSearch `site:arxiv.org AI breakthrough OR "state of the art" OR "large language model" [current month year]`
+    - Category: `breakthroughs`
+    - Look for: papers trending on social media, benchmark-breaking results
 
-12. **Product Hunt**
-    - Query: `site:producthunt.com AI tools [current month year]`
-    - Look for: new AI product launches, trending tools
+12. **Product Hunt** — WebSearch `site:producthunt.com AI tools [current month year]`
+    - Category: `breakthroughs`
+    - Look for: viral AI product launches, trending tools
+
+13. **GitHub Trending** — WebSearch `github trending AI OR "machine learning" repositories [current month year]`
+    - Category: `breakthroughs`
+    - Look for: viral open-source projects, new frameworks
+
+14. **Reddit AI** — WebSearch `site:reddit.com/r/MachineLearning OR site:reddit.com/r/artificial breakthrough OR "new model" [current month year]`
+    - Category: `breakthroughs`
+    - Look for: community excitement around new capabilities
+
+15. **Dev.to** — WebSearch `site:dev.to AI OR "machine learning" OR "LLM" popular [current month year]`
+    - Category: `breakthroughs`
+    - Look for: hands-on demos, tool comparisons that go viral
+
+### Group 3: Cybersecurity & OSINT Sources
+
+These feed the **Cyber Intel** tab. If pre-fetch OSINT data exists, use it for CISA/NVD items and focus WebSearch on editorial sources.
+
+16. **BleepingComputer** — WebSearch `site:bleepingcomputer.com vulnerability OR breach OR ransomware [current month year]`
+    - Category: `cyber-intel`
+    - Look for: active exploits, breach reports, malware analysis
+
+17. **Dark Reading** — WebSearch `site:darkreading.com vulnerability OR threat OR breach [current month year]`
+    - Category: `cyber-intel`
+    - Look for: threat intelligence, industry analysis
+
+18. **SecurityWeek** — WebSearch `site:securityweek.com vulnerability OR cyber OR breach [current month year]`
+    - Category: `cyber-intel`
+    - Look for: vulnerability disclosures, APT reports
+
+19. **Krebs on Security** — WebSearch `site:krebsonsecurity.com [current month year]`
+    - Category: `cyber-intel`
+    - Look for: investigative cybersecurity reporting
+
+20. **The Record** — WebSearch `site:therecord.media cyber OR vulnerability OR ransomware [current month year]`
+    - Category: `cyber-intel`
+    - Look for: nation-state activity, policy, major incidents
+
+21. **Hacker News (Security)** — WebSearch `site:news.ycombinator.com vulnerability OR security OR CVE OR breach [current month year]`
+    - Category: `cyber-intel`
+    - Look for: trending security discussions
+
+22. **r/netsec** — WebSearch `site:reddit.com/r/netsec [current month year]`
+    - Category: `cyber-intel`
+    - Look for: vulnerability research, exploit PoCs, CTF writeups
+
+23. **Twitter/X (InfoSec)** — WebSearch `site:x.com (@caborsi OR @GossiTheDog OR @vaborsi OR @MalwareHunterTeam) [current month year]`
+    - Category: `cyber-intel`
+    - Look for: real-time threat intel, zero-day announcements
 
 ## Data Capture
 
@@ -88,10 +138,27 @@ For each story found, record:
 | Field | Description |
 |-------|-------------|
 | `title` | Headline or post title |
-| `url` | Direct link to the story |
-| `source` | Source name (e.g., "Anthropic Blog", "TechCrunch") |
+| `url` | Direct link to the specific article page (NEVER a homepage or section page — see URL rules below) |
+| `source` | Source name (e.g., "BleepingComputer", "TechCrunch") |
 | `summary` | 1-2 sentence description of the content |
 | `date` | Publish date (approximate if not explicit) |
+| `category` | One of: `ai-news`, `breakthroughs`, `cyber-intel` |
+
+## URL Rules
+
+Every story **must** link to the specific article page. Homepage and section-page URLs are strictly prohibited.
+
+**Rejected URL patterns** (these are homepages/section pages, NOT article links):
+- `https://thehackernews.com/`
+- `https://www.bleepingcomputer.com/`
+- `https://techcrunch.com/`
+- `https://arstechnica.com/`
+- Any URL that is just a domain root or ends in a category path like `/security/` or `/ai/`
+
+**If you cannot find the direct article URL:**
+1. Search again with the article's headline in quotes: `"exact headline text" site:source.com`
+2. If still not found, search for the headline without site restriction to find the story on any source
+3. If the story truly cannot be linked to a specific article, **drop the story entirely** — do not use a homepage URL as a placeholder
 
 ## Error Handling
 
@@ -102,4 +169,4 @@ For each story found, record:
 
 ## Output
 
-Produce a raw list of all stories found across all sources. Do not score or filter at this stage — that is the curation skill's job. Include duplicates if they exist; deduplication happens during curation.
+Produce a raw list of all stories found across all sources, each tagged with its category. Do not score or filter at this stage — that is the curation skill's job. Include duplicates if they exist; deduplication happens during curation.
