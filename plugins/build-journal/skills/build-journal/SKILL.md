@@ -146,6 +146,16 @@ Write the generated document to all four destinations concurrently:
 
 If any destination fails, continue with the others and report what succeeded.
 
+## Step 6: Commit Offer
+
+After writing to all destinations, **always ask the user** if they want to commit and push
+the build journal entry in the current project repo. This is a required step — do not skip it.
+
+Example: "Build journal written. Want me to commit and push it?"
+
+If the user confirms, stage the build journal file, commit with message
+`docs: add build journal entry for <topic>`, and push to the remote.
+
 ## After Writing
 
 Confirm briefly: "Build journal entry saved to [destinations that succeeded]. [Commit count]
