@@ -193,6 +193,16 @@ claude -p \
 EXIT_CODE=$?
 
 echo ""
+
+# --- Trigger Vercel rebuild (non-fatal) ---
+if [[ $EXIT_CODE -eq 0 ]]; then
+    VERCEL_HOOK=$(security find-generic-password -s tech-news-briefing-vercel-hook -w 2>/dev/null || true)
+    if [[ -n "$VERCEL_HOOK" ]]; then
+        echo "Triggering Vercel deploy..."
+        curl -s -X POST "$VERCEL_HOOK" > /dev/null && echo "Vercel deploy triggered." || echo "WARN: Vercel deploy hook failed (non-fatal)"
+    fi
+fi
+
 echo "========================================"
 echo "Finished: $(date '+%Y-%m-%d %H:%M:%S %Z')"
 echo "Exit code: ${EXIT_CODE}"
