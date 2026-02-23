@@ -29,26 +29,26 @@ USER_AGENT = "BPG-Tech-News/2.0 (prefetch)"
 # To find a show ID: open in Spotify, copy link, extract ID from URL
 TRACKED_SHOWS = {
     # AI / Tech
-    "6UJ6cnotchKOCrzKm6O21B": "My First Million",
-    "4kI3lwGJE4VKbbJkWkMFyc": "All-In Podcast",
+    "3mliji9352UAk3XnWElnDV": "My First Million",
+    "2IqXAVFR4e0Bmyjsdc8QzF": "All-In Podcast",
     "6E709HRH7XaiZrMfgtNCun": "Hard Fork",
-    "6fhXaOEt4VaTSIaEVHfO3Z": "The Vergecast",
-    "5bC65RDzs4KRb4qHU3IbMM": "a16z Podcast",
-    "2qmpMOC8QdCAJR2nqMQHAu": "The Artificial Intelligence Show",
-    "0d9RC595XFGAeDHrXpmFJD": "Acquired",
-    "7wZygk3mUUqBaQsLBOmkjN": "Latent Space",
-    "2p7zZVwVF6Yk0Zsb4QmT7t": "Cognitive Revolution",
-    "0gJwMh01bTTBRnuUBHTTQO": "TWIML AI Podcast",
-    "2nEOFcgN4IjRGDjYM9VlqB": "Gradient Dissent",
+    "08zQP2peZmM9GrcKShLZvC": "The Vergecast",
+    "5bC65RDvs3oxnLyqqvkUYX": "a16z Podcast",
+    "6EVaCucTjIPmJosh3jQui0": "The Artificial Intelligence Show",
+    "7Fj0XEuUQLUqoMZQdsLXqp": "Acquired",
+    "2p7zZVwVF6Yk0Zsb4QmT7t": "Latent Space",
+    "6yHyok3M3BjqzR0VB5MSyk": "Cognitive Revolution",
+    "2sp5EL7s7EqxttxwwoJ3i7": "TWIML AI Podcast",
+    "7o9r3fFig3MhTJwehXDbXm": "Gradient Dissent",
     "0KxdEdeY2Wb3zr28dMlQva": "Practical AI",
-    "3vBiDjHsJbXMSiSDcFyrLq": "Bloomberg Technology",
-    "0e8IPkPohYFmI5PiLLxJUL": "Masters of Scale",
+    "5L84QuZlUsILySyMZNM07W": "Bloomberg Technology",
+    "1bJRgaFZHuzifad4IAApFR": "Masters of Scale",
     # Security
     "4XPl3uEEL9hvqMkoZrzbx5": "Darknet Diaries",
-    "3NnRsPnXQsCRrwOwg1e7Wr": "Smashing Security",
-    "1KHjbpnmNpFmNTczQmTZlR": "Malicious Life",
+    "3J7pBxEu43nCnRTSXaan8S": "Smashing Security",
+    "1KHIsaZ9mX0NbzPrfId00q": "Malicious Life",
     # Y Combinator
-    "7BjjnYSmDLGBfNkDhJklIi": "Y Combinator",
+    "1tgqafxZAB0Bjd8nkwVtE4": "Y Combinator",
 }
 
 
